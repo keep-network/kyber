@@ -7,14 +7,16 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gopkg.in/dedis/kyber.v1"
-	"gopkg.in/dedis/kyber.v1/group/edwards25519"
+	"gopkg.in/dedis/kyber.v1/group/pbc"
 	"gopkg.in/dedis/kyber.v1/share"
 	"gopkg.in/dedis/kyber.v1/share/vss"
 	"gopkg.in/dedis/kyber.v1/sign/schnorr"
 	"gopkg.in/dedis/kyber.v1/util/random"
 )
 
-var suite = edwards25519.NewAES128SHA256Ed25519(false)
+//var suite = edwards25519.NewAES128SHA256Ed25519(false)
+var pairing = pbc.NewPairingFp382_2()
+var suite = pairing.G2()
 
 var nbParticipants = 7
 

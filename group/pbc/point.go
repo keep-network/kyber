@@ -216,10 +216,11 @@ func (p *PointG2) Pick(rand cipher.Stream) kyber.Point {
 
 func (p *PointG2) EmbedLen() int {
 	// 8 bits for the randomness and 8 bits for the size of the message
-	return (bls.GetOpUnitSize() * 8 * 2) - 1 - 1
+	return p.MarshalSize() - 1 - 1
 }
 
 func (p *PointG2) Embed(data []byte, rand cipher.Stream) kyber.Point {
+	panic("not working for the moment")
 	embed(p, data, rand)
 	return p
 }
@@ -262,7 +263,9 @@ func (p *PointGT) Equal(p2 kyber.Point) bool {
 }
 
 func (p *PointGT) Null() kyber.Point {
-	p.g.Clear()
+	// multiplicative identity
+	p.g.SetInt64(1)
+	//p.g.Clear()
 	return p
 }
 

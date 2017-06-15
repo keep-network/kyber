@@ -45,7 +45,7 @@ func printSeed(name string, h hashmap, t *testing.T) {
 }
 
 func TestG2(t *testing.T) {
-	var p0 = NewPairingFp254BNb()
+	var p0 = NewPairingFp382_2()
 	g2 := p0.GT()
 	q1 := g2.Point().Base()  // q1 = base
 	q2 := g2.Point().Neg(q1) // q2 =  -base

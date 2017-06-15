@@ -73,15 +73,15 @@ func NewPairingFp382_2() *Pairing {
 	return NewPairing(CurveFp382_2)
 }
 
-func (p *Pairing) G1() kyber.Group {
+func (p *Pairing) G1() *g1group {
 	return &p.g1
 }
 
-func (p *Pairing) G2() kyber.Group {
+func (p *Pairing) G2() *g2group {
 	return &p.g2
 }
 
-func (p *Pairing) GT() PairingGroup {
+func (p *Pairing) GT() *gtgroup {
 	return &p.gt
 }
 

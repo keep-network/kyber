@@ -73,18 +73,25 @@ func NewPairingFp382_2() *Pairing {
 	return NewPairing(CurveFp382_2)
 }
 
-func (p *Pairing) G1() *g1group {
+func (p *Pairing) G1() kyber.Group {
 	return &p.g1
 }
 
-func (p *Pairing) G2() *g2group {
+func (p *Pairing) G2() kyber.Group {
 	return &p.g2
 }
 
-func (p *Pairing) GT() *gtgroup {
+func (p *Pairing) GT() PairingGroup {
 	return &p.gt
 }
 
+func (p *Pairing) Cipher(key []byte, options ...interface{}) kyber.Cipher {
+	return sha3.NewShakeCipher128(key, options...)
+}
+
+func (p *Pairing) Hash() hash.Hash {
+	return sha256.New()
+}
 func (g *g1group) String() string {
 	return curveName(g.p.curve) + "_G1"
 }

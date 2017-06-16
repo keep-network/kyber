@@ -27,6 +27,14 @@ type PairingPoint interface {
 	Pairing(p1, p2 kyber.Point) kyber.Point
 }
 
+// PairingSuite represents the basic functionalities needed to use pairing based
+// cryptography.
+type PairingSuite interface {
+	G1() kyber.Group
+	G2() kyber.Group
+	GT() PairingGroup
+}
+
 type g1group struct{ p *Pairing }
 type g2group struct{ p *Pairing }
 type gtgroup struct{ p *Pairing }

@@ -13,10 +13,14 @@ import (
 // underlying field
 // - NewKeyPair does not when given this suite. Each G1, G2 or GT should
 // implement Cipher / Hash factory to be usable. Huge repetition for low gains.
-type Suite interface {
+type PairingSuite interface {
 	G1() kyber.Group
 	G2() kyber.Group
 	GT() pbc.PairingGroup
+}
+
+type Suite interface {
+	PairingSuite
 	kyber.HashFactory
 	kyber.CipherFactory
 }
@@ -41,7 +45,7 @@ func Sign(s Suite, private kyber.Scalar, msg []byte) []byte {
 
 // Verify checks the signature. Namely, it checks the equivalence between
 //
-//  e(H(m),X) == e(s, G2)
+//  e(H(m),X) == e(H(m), G2^x) == e(H(m)^x, G2) == e(s, G2)
 //
 // where m is the message, X the public key from G2, s the signature and G2 the base
 // point from which the public key have been generated.

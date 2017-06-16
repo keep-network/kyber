@@ -8,11 +8,6 @@ import (
 	"gopkg.in/dedis/kyber.v1/group/pbc"
 )
 
-// XXX ideas or comments for the Suite modularization
-// - a bit annoying having to implement Scalar in each group while it's the same
-// underlying field
-// - NewKeyPair does not when given this suite. Each G1, G2 or GT should
-// implement Cipher / Hash factory to be usable. Huge repetition for low gains.
 type PairingSuite interface {
 	G1() kyber.Group
 	G2() kyber.Group

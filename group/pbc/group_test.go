@@ -12,23 +12,23 @@ import (
 func TestPrintConstants(t *testing.T) {
 	t.Skip("test generating the generators")
 	var p0 = NewPairingFp254BNb()
-	p0g1 := p0.G1().Point().(*PointG1)
+	p0g1 := p0.G1().Point().(*pointG1)
 	printSeed(Fp254_G1_Base_Seed, &p0g1.g, t)
-	p0g2 := p0.G2().Point().(*PointG2)
+	p0g2 := p0.G2().Point().(*pointG2)
 	printSeed(Fp254_G2_Base_Seed, &p0g2.g, t)
 
 	fmt.Println()
 	var p1 = NewPairingFp382_1()
-	p1g1 := p1.G1().Point().(*PointG1)
+	p1g1 := p1.G1().Point().(*pointG1)
 	printSeed(Fp382_1_G1_Base_Seed, &p1g1.g, t)
-	p1g2 := p1.G2().Point().(*PointG2)
+	p1g2 := p1.G2().Point().(*pointG2)
 	printSeed(Fp382_1_G2_Base_Seed, &p1g2.g, t)
 
 	fmt.Println()
 	var p2 = NewPairingFp382_2()
-	p2g1 := p2.G1().Point().(*PointG1)
+	p2g1 := p2.G1().Point().(*pointG1)
 	printSeed(Fp382_2_G1_Base_Seed, &p2g1.g, t)
-	p2g2 := p2.G2().Point().(*PointG2)
+	p2g2 := p2.G2().Point().(*pointG2)
 	printSeed(Fp382_2_G2_Base_Seed, &p2g2.g, t)
 
 }
@@ -66,14 +66,14 @@ func TestG2(t *testing.T) {
 func TestP0(t *testing.T) {
 	var p0 = NewPairingFp254BNb()
 	test.TestGroup(p0.G1())
-	test.TestGroup(p0.G2())
+	//test.TestGroup(p0.G2())
 	//test.TestGroup(p0.GT())
 }
 
 func TestP1(t *testing.T) {
 	var p1 = NewPairingFp382_1()
 	test.TestGroup(p1.G1())
-	test.TestGroup(p1.G2())
+	//test.TestGroup(p1.G2())
 	//test.TestGroup(p1.GT())
 }
 

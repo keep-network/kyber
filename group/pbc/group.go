@@ -14,12 +14,12 @@ import (
 type PairingGroup interface {
 	kyber.Group // Standard Group operations
 
-	PairingPoint() PairingPoint // Create new pairing-capable Point
+	PointGT() PointGT // Create new pairing-capable Point
 }
 
 // Point interface extension for a point in a pairing target group (GT),
 // which supports the Pairing operation.
-type PairingPoint interface {
+type PointGT interface {
 	kyber.Point // Standard Point operations
 
 	// Compute the pairing of two points p1 and p2,
@@ -35,15 +35,24 @@ type PairingSuite interface {
 	GT() PairingGroup
 }
 
-type g1group struct{ p *Pairing }
-type g2group struct{ p *Pairing }
-type gtgroup struct{ p *Pairing }
+type g1group struct {
+	common
+	curve int
+}
+type g2group struct {
+	common
+	curve int
+}
+type gtgroup struct {
+	common
+	p *Pairing
+}
 
 // A Pairing object represents a pairing-based cryptography environment,
 // consisting of two source groups G1 and G2 and a target group GT.
 // All of these groups support the standard Group API operations.
 // In addition, the GT group supports the new Pairing operation,
-// via the PairingPoint extension to the Point interface.
+// via the PointGT extension to the Point interface.
 // The input groups G1 and G2 may be identical or different,
 // as indicated by the Symmetric() method.
 type Pairing struct {
@@ -63,8 +72,8 @@ func NewPairing(curve int) *Pairing {
 	}
 	bls.Init(curve)
 	p := &Pairing{curve: curve}
-	p.g1.p = p
-	p.g2.p = p
+	p.g1.curve = curve
+	p.g2.curve = curve
 	p.gt.p = p
 	return p
 }
@@ -101,15 +110,7 @@ func (p *Pairing) Hash() hash.Hash {
 	return sha256.New()
 }
 func (g *g1group) String() string {
-	return curveName(g.p.curve) + "_G1"
-}
-
-func (g *g1group) ScalarLen() int {
-	return bls.GetOpUnitSize() * 8
-}
-
-func (g *g1group) Scalar() kyber.Scalar {
-	return NewScalar()
+	return curveName(g.curve) + "_G1"
 }
 
 func (g *g1group) PointLen() int {
@@ -117,11 +118,7 @@ func (g *g1group) PointLen() int {
 }
 
 func (g *g1group) Point() kyber.Point {
-	return newPointG1(generator(g.p.curve, 0))
-}
-
-func (g *g1group) PrimeOrder() bool {
-	return true
+	return newPointG1(generator(g.curve, 0))
 }
 
 func (g *g1group) NewKey(rand cipher.Stream) kyber.Scalar {
@@ -129,15 +126,7 @@ func (g *g1group) NewKey(rand cipher.Stream) kyber.Scalar {
 }
 
 func (g *g2group) String() string {
-	return curveName(g.p.curve) + "_G2"
-}
-
-func (g *g2group) ScalarLen() int {
-	return bls.GetOpUnitSize() * 8
-}
-
-func (g *g2group) Scalar() kyber.Scalar {
-	return NewScalar()
+	return curveName(g.curve) + "_G2"
 }
 
 func (g *g2group) PointLen() int {
@@ -145,11 +134,7 @@ func (g *g2group) PointLen() int {
 }
 
 func (g *g2group) Point() kyber.Point {
-	return newPointG2(generator(g.p.curve, 1))
-}
-
-func (g *g2group) PrimeOrder() bool {
-	return true
+	return newPointG2(generator(g.curve, 1))
 }
 
 func (g *g2group) NewKey(rand cipher.Stream) kyber.Scalar {
@@ -160,14 +145,6 @@ func (g *gtgroup) String() string {
 	return curveName(g.p.curve) + "_GT"
 }
 
-func (g *gtgroup) ScalarLen() int {
-	return bls.GetOpUnitSize() * 8
-}
-
-func (g *gtgroup) Scalar() kyber.Scalar {
-	return NewScalar()
-}
-
 func (g *gtgroup) PointLen() int {
 	return g.Point().MarshalSize()
 }
@@ -176,40 +153,34 @@ func (g *gtgroup) Point() kyber.Point {
 	return newPointGT(g.p)
 }
 
-func (g *gtgroup) PairingPoint() PairingPoint {
-	return g.Point().(PairingPoint)
-}
-
-func (g *gtgroup) PrimeOrder() bool {
-	return true
+func (g *gtgroup) PointGT() PointGT {
+	return g.Point().(PointGT)
 }
 
 func (g *gtgroup) NewKey(rand cipher.Stream) kyber.Scalar {
 	return NewScalar().Pick(rand)
 }
 
-func (g *gtgroup) Cipher(key []byte, options ...interface{}) kyber.Cipher {
-	return sha3.NewShakeCipher128(key, options...)
-}
+type common struct{}
 
-func (g *gtgroup) Hash() hash.Hash {
+func (c *common) Hash() hash.Hash {
 	return sha256.New()
 }
 
-func (g *g1group) Cipher(key []byte, options ...interface{}) kyber.Cipher {
+func (c *common) Cipher(key []byte, options ...interface{}) kyber.Cipher {
 	return sha3.NewShakeCipher128(key, options...)
 }
 
-func (g *g1group) Hash() hash.Hash {
-	return sha256.New()
+func (c *common) PrimeOrder() bool {
+	return true
 }
 
-func (g *g2group) Cipher(key []byte, options ...interface{}) kyber.Cipher {
-	return sha3.NewShakeCipher128(key, options...)
+func (c *common) ScalarLen() int {
+	return bls.GetOpUnitSize() * 8
 }
 
-func (g *g2group) Hash() hash.Hash {
-	return sha256.New()
+func (c *common) Scalar() kyber.Scalar {
+	return NewScalar()
 }
 
 func curveName(curve int) string {

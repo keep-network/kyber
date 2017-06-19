@@ -46,14 +46,14 @@ func Sign(s Suite, private kyber.Scalar, msg []byte) []byte {
 // point from which the public key have been generated.
 func Verify(s Suite, public kyber.Point, msg, sig []byte) error {
 	HM := hashed(s, msg)
-	left := s.GT().PairingPoint().Pairing(HM, public)
+	left := s.GT().PointGT().Pairing(HM, public)
 	sigPoint := s.G1().Point()
 	if err := sigPoint.UnmarshalBinary(sig); err != nil {
 		return err
 	}
 
 	g2 := s.G2().Point().Base()
-	right := s.GT().PairingPoint().Pairing(sigPoint, g2)
+	right := s.GT().PointGT().Pairing(sigPoint, g2)
 
 	if !left.Equal(right) {
 		return errors.New("bls: invalid signature")

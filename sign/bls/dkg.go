@@ -41,7 +41,7 @@ type DKG struct {
 	// protected share
 	xS kyber.Point
 
-	// partials share-public keys
+	// partials share-public keys g^x_i
 	partials []*share.PubShare
 
 	// share - public key
@@ -226,16 +226,34 @@ func (d *DKG) RevealBLSPartial(msg []byte) *PartialBLS {
 }
 
 func (d *DKG) VerifySignatures(msg []byte, pb []*PartialBLS) error {
+
+	c := hashMsg(d.suite, msg)
 	var pubs []*share.PubShare
 	for _, p := range pb {
+		// e(s, xS)
 		paired := d.suite.GT().PointGT().Pairing(p.Signature, p.C)
+		// check that the paired signature correspond to g^x_i^c
+		// find the g^x_i
+		var g_xi kyber.Point
+		for _, partial := range d.partials {
+			if partial.I != p.Index {
+				continue
+			}
+			g_xi = partial.V
+		}
+		if g_xi == nil {
+			return errors.New("no partial public key found")
+		}
+		g_xi_c := d.suite.GT().PointGT().Mul(c, g_xi)
+		if !g_xi_c.Equal(paired) {
+			return errors.New("Partial signature invalid")
+		}
 		pubs = append(pubs, &share.PubShare{I: p.Index, V: paired})
 	}
 	signature, err := share.RecoverCommit(d.suite.GT(), pubs, d.t, len(d.participants))
 	if err != nil {
 		return err
 	}
-	c := hashMsg(d.suite, msg)
 	check := d.suite.GT().Point().Mul(c, d.g_x)
 	if !check.Equal(signature) {
 		return errors.New("invalid error")

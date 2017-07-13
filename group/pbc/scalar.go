@@ -10,7 +10,7 @@ import (
 	"dfinity/crypto/bls"
 
 	"gopkg.in/dedis/kyber.v1"
-	"gopkg.in/dedis/kyber.v1/util/marshalling"
+	"gopkg.in/dedis/kyber.v1/group/internal/marshalling"
 )
 
 type scalar struct {

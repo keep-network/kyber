@@ -4,30 +4,11 @@ import (
 	"crypto/cipher"
 	"errors"
 
+	"gopkg.in/dedis/kyber.v1/util/key"
+
 	"gopkg.in/dedis/kyber.v1"
 	"gopkg.in/dedis/kyber.v1/util/subtle"
 )
-
-// XXX belongs in crypto package?
-func keyPair(suite Suite, rand cipher.Stream,
-	hide bool) (kyber.Point, kyber.Scalar, []byte) {
-
-	x := suite.Scalar().Pick(rand)
-	X := suite.Point().Mul(x, nil)
-	if !hide {
-		Xb, _ := X.MarshalBinary()
-		return X, x, Xb
-	}
-	Xh := X.(kyber.Hiding)
-	for {
-		Xb := Xh.HideEncode(rand) // try to encode as uniform blob
-		if Xb != nil {
-			return X, x, Xb // success
-		}
-		x.Pick(rand) // try again with a new key
-		X.Mul(x, nil)
-	}
-}
 
 func header(suite Suite, X kyber.Point, x kyber.Scalar,
 	Xb, xb []byte, anonymitySet Set) []byte {
@@ -56,11 +37,18 @@ func encryptKey(suite Suite, rand cipher.Stream,
 	anonymitySet Set, hide bool) (k, c []byte) {
 
 	// Choose a keypair and encode its representation
-	X, x, Xb := keyPair(suite, rand, hide)
-	xb, _ := x.MarshalBinary()
-
+	kp := new(key.Pair)
+	var Xb []byte
+	if hide {
+		kp.GenHiding(suite, rand)
+		Xb = kp.Hiding.HideEncode(rand)
+	} else {
+		kp.Gen(suite, rand)
+		Xb, _ = kp.Public.MarshalBinary()
+	}
+	xb, _ := kp.Secret.MarshalBinary()
 	// Generate the ciphertext header
-	return xb, header(suite, X, x, Xb, xb, anonymitySet)
+	return xb, header(suite, kp.Public, kp.Secret, Xb, xb, anonymitySet)
 }
 
 // Decrypt and verify a key encrypted via encryptKey.

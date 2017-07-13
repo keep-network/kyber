@@ -132,11 +132,13 @@ type option struct{ name string }
 
 func (o *option) String() string { return o.name }
 
-// Pass NoKey to a Cipher constructor to create an unkeyed Cipher.
+// NoKey is given to a Cipher constructor to create an unkeyed
+// Cipher.
 var NoKey = []byte{}
 
-// Pass RandomKey to a Cipher constructor to create a randomly seeded Cipher.
-var RandomKey []byte = nil
+// RandomKey is given to a Cipher constructor to create a
+// randomly seeded Cipher.
+var RandomKey []byte
 
 // Cipher represents a general-purpose symmetric message cipher.
 // A Cipher instance embodies a scalar that may be used to encrypt/decrypt data
@@ -352,14 +354,7 @@ func (c Cipher) Open(dst, src []byte) ([]byte, error) {
 	return dst, nil
 }
 
-// XXX Fork off nsubs >= 0 parallel sub-Ciphers and update the state.
-//	Fork(nsubs int) []Cipher
-
-// XXX Combine this Cipher's state with that of previously-forked Ciphers.
-// The rejoined sub-Ciphers must no longer be used.
-//	Join(subs ...Cipher)
-
-// Clone creates an initially identicial instance of a Cipher.
+// Clone creates an initially identical instance of a Cipher.
 // Warning:: misuse of Clone can lead to replay or key-reuse vulnerabilities.
 func (c Cipher) Clone() Cipher {
 	return Cipher{c.CipherState.Clone()}

@@ -1,3 +1,5 @@
+package proof
+
 // A clique protocol is an kyber.on for a cryptographic protocol
 // in which every participant knows about and interacts directly
 // in lock-step with every other participant in the clique.
@@ -7,7 +9,6 @@
 // The basic clique protocol
 // assumes that nodes are always "live" and never go offline,
 // but we can achieve availability via threshold kyber.
-package proof
 
 import "gopkg.in/dedis/kyber.v1"
 
@@ -17,7 +18,6 @@ import "gopkg.in/dedis/kyber.v1"
 // and finally returns once the protocol has concluded for all participants.
 // Returns a slice of success/error indicators, one for each participant.
 //
-// XXX this interface should probably move to a "protocol" module of some kind.
 type Protocol func(ctx Context) []error
 
 // Context represents an kyber.context for running a clique protocol.

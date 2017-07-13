@@ -5,13 +5,13 @@ import (
 	"crypto/rc4"
 	"testing"
 
+	"golang.org/x/crypto/blowfish"
+	"golang.org/x/crypto/salsa20"
+	"golang.org/x/crypto/twofish"
 	"gopkg.in/dedis/kyber.v1"
 	"gopkg.in/dedis/kyber.v1/cipher/aes"
 	"gopkg.in/dedis/kyber.v1/cipher/norx"
 	"gopkg.in/dedis/kyber.v1/cipher/sha3"
-	"golang.org/x/crypto/blowfish"
-	"golang.org/x/crypto/salsa20"
-	"golang.org/x/crypto/twofish"
 )
 
 var buf = make([]byte, 1024*1024)
@@ -96,7 +96,7 @@ func BenchmarkNORX_1K(b *testing.B) {
 
 // 1M messages
 
-/* XXX 1MB buffers cause some kind of super-slowdown here??
+/*
 func BenchmarkAes128_1M(b *testing.B) {
 	benchmarkCipher(b, aes.NewCipher128(kyber.NoKey), 1024*1024)
 }

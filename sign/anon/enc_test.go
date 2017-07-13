@@ -7,13 +7,13 @@ import (
 	"encoding/hex"
 
 	"gopkg.in/dedis/kyber.v1"
-	"gopkg.in/dedis/kyber.v1/group/nist"
+	"gopkg.in/dedis/kyber.v1/group/edwards25519"
 )
 
-func ExampleEncrypt_1() {
+func Example_encrypt1() {
 
 	// Crypto setup
-	suite := nist.NewAES128SHA256P256()
+	suite := edwards25519.NewAES128SHA256Ed25519(false)
 	rand := suite.Cipher([]byte("example"))
 
 	// Create a public/private keypair (X[mine],x)
@@ -37,23 +37,21 @@ func ExampleEncrypt_1() {
 	}
 	fmt.Printf("Decrypted: '%s'\n", string(MM))
 
-	// Output:
 	// Encryption of 'Hello World!':
-	// 00000000  04 23 62 b1 f9 cb f4 a2  6d 7f 3e 69 cb b6 77 ab  |.#b.....m.>i..w.|
-	// 00000010  90 fc 7c db a0 c6 e8 12  f2 0a d4 40 a4 b6 c4 de  |..|........@....|
-	// 00000020  9e e8 61 88 5e 50 fd 03  a9 ff 9c a3 c4 29 f7 18  |..a.^P.......)..|
-	// 00000030  49 ad 31 0e f9 17 15 1e  3b 8d 0e 2f b2 c4 28 32  |I.1.....;../..(2|
-	// 00000040  4a a4 16 00 51 da 5e d5  3a df f3 02 fe 77 0d 11  |J...Q.^.:....w..|
-	// 00000050  27 7b 29 b4 a0 47 7a 82  8f 0a 98 4f fe fe 1e 5d  |'{)..Gz....O...]|
-	// 00000060  cf d2 08 9a e5 f0 d9 3c  6b 0d 83 35 6d 15 b1 93  |.......<k..5m...|
-	// 00000070  af 1d a2 17 df db 3c 2b  89 32 1b 62 1b           |......<+.2.b.|
+	// 00000000  f9 d1 d4 75 7b 0d 76 68  95 08 71 74 9a 87 5f 1e  |...u{.vh..qt.._.|
+	// 00000010  0a 22 23 34 bd d1 5b f6  e7 21 3c f3 c9 92 6f bd  |."#4..[..!<...o.|
+	// 00000020  b9 87 fd 9c 32 29 43 56  e8 32 59 52 19 1e c0 2b  |....2)CV.2YR...+|
+	// 00000030  24 29 31 ff c6 ce ac b9  2f b1 78 14 e9 86 b5 b1  |$)1...../.x.....|
+	// 00000040  bf ac 82 f9 d0 c1 98 83  0c a2 af a7 93 8d 6d 00  |..............m.|
+	// 00000050  91 eb 5f 48 0d 2b a5 e9  c2 be d6 3c              |.._H.+.....<|
 	// Decrypted: 'Hello World!'
+
 }
 
 func ExampleEncrypt_anonSet() {
 
 	// Crypto setup
-	suite := nist.NewAES128SHA256P256()
+	suite := edwards25519.NewAES128SHA256Ed25519(false)
 	rand := suite.Cipher([]byte("example"))
 
 	// Create an anonymity set of random "public keys"
@@ -82,19 +80,16 @@ func ExampleEncrypt_anonSet() {
 	}
 	fmt.Printf("Decrypted: '%s'\n", string(MM))
 
-	// Output:
 	// Encryption of 'Hello World!':
-	// 00000000  04 a4 2a cf e6 41 38 3f  d4 df 6e f4 70 05 a8 ec  |..*..A8?..n.p...|
-	// 00000010  55 8a a5 a4 73 7f 34 ae  1c 50 69 fe af e4 71 01  |U...s.4..Pi...q.|
-	// 00000020  51 33 a7 89 e2 f0 85 81  ce e9 bc d2 49 cb aa 9a  |Q3..........I...|
-	// 00000030  55 c5 99 ad 5c a5 e4 36  e4 71 c8 c1 58 4c f7 aa  |U...\..6.q..XL..|
-	// 00000040  2f 3f d2 9a ec 4b fd 85  5e 1b 7f 08 3b 82 12 75  |/?...K..^...;..u|
-	// 00000050  76 e5 b2 0a 48 d1 d1 9a  5f 45 eb 57 e6 5b 4c 81  |v...H..._E.W.[L.|
-	// 00000060  10 d7 98 e0 f4 ce 98 9f  94 66 28 8d c4 ff 61 3f  |.........f(...a?|
-	// 00000070  2a 61 c1 31 f8 b5 60 b7  82 05 64 e4 cd 86 66 43  |*a.1..`...d...fC|
-	// 00000080  f1 c1 de 23 d5 ea 19 ba  dd 27 fa 4c 66 d8 a0 19  |...#.....'.Lf...|
-	// 00000090  1e 6c ea 70 b7 71 8f b5  cd 3a 49 6d c3 03 08 e0  |.l.p.q...:Im....|
-	// 000000a0  4d d6 67 9c 02 67 38 c2  d8 78 0d fd 97 f2 2b 8b  |M.g..g8..x....+.|
-	// 000000b0  b3 b2 ae 0d f1 2b 1c 1b  13 9d 71 75 b8           |.....+....qu.|
+	// 00000000  3c 2e 26 55 5e 9c 59 55  68 91 5c 68 19 e3 10 6a  |<.&U^.YUh.\h...j|
+	// 00000010  be 1d 8c fc 52 b1 85 98  31 a9 81 08 24 bb f0 d0  |....R...1...$...|
+	// 00000020  db 47 f9 b3 ee 3b 14 f2  2d 8f 0a c9 83 9d 47 1a  |.G...;..-.....G.|
+	// 00000030  69 0f a4 b2 5b 44 c8 a0  ca 33 1e c6 04 9d 98 35  |i...[D...3.....5|
+	// 00000040  31 cd 3a a9 0b 44 64 d5  a5 54 d4 5d 33 67 9e 2e  |1.:..Dd..T.]3g..|
+	// 00000050  35 e8 05 f3 17 c9 a5 14  9f 5b b6 9a c3 ee 57 54  |5........[....WT|
+	// 00000060  64 2f c2 06 36 ae aa af  f8 61 9d c3 cd 09 c2 d7  |d/..6....a......|
+	// 00000070  74 8d 32 bf 08 cb ef 1d  06 af 35 52 99 1f b1 16  |t.2.......5R....|
+	// 00000080  a7 3c 1b 02 8a 5f bd eb  f0 28 94 df 36 44 07 be  |.<..._...(..6D..|
+	// 00000090  22 01 7c dc ad 06 09 7a  62 8e 45 98              |".|....zb.E.|
 	// Decrypted: 'Hello World!'
 }

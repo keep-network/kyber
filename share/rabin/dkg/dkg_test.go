@@ -9,7 +9,7 @@ import (
 	"gopkg.in/dedis/kyber.v1"
 	"gopkg.in/dedis/kyber.v1/group/pbc"
 	"gopkg.in/dedis/kyber.v1/share"
-	"gopkg.in/dedis/kyber.v1/share/vss"
+	"gopkg.in/dedis/kyber.v1/share/rabin/vss"
 	"gopkg.in/dedis/kyber.v1/sign/schnorr"
 	"gopkg.in/dedis/kyber.v1/util/random"
 )

@@ -11,6 +11,18 @@ Please see the
 [GoDoc documentation for this package](http://godoc.org/gopkg.in/dedis/kyber.v1)
 for details on the library's purpose and API functionality.
 
+Custom Installation for DFINITY code
+------------------------------------
+
+To play with the dfinity paring based cryptographic code, make sure:
++ to be allowed in the repository github.com/dfinity/crypto
++ `git clone github.com/dfinity/crypto` 
++ to be on this branch `git checkout v1_dfinity`
++ change the `dfinityPath` in the `group/pbc/setup.sh` path where you cloned the
+  dfinity crypto code
++ run the container with `group/pbc/setup.sh`
++ you can now type `cd go/src/gopkg.in/dedis/kyber.v1/group/pbc` and run tests !
+
 Installing
 ----------
 

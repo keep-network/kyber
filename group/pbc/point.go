@@ -438,3 +438,16 @@ func data(p pbcPoint) ([]byte, error) {
 func clear(p clearable) {
 	p.Clear()
 }
+
+var ErrVarTime = errors.New("no constant time implementation available")
+
+func (p *pointG1) SetVarTime(varTime bool) error {
+	return ErrVarTime
+}
+
+func (p *pointG2) SetVarTime(varTime bool) error {
+	return ErrVarTime
+}
+func (p *pointGT) SetVarTime(varTime bool) error {
+	return ErrVarTime
+}

@@ -155,3 +155,7 @@ func (s *scalar) String() string {
 func clearScalar(s *scalar) {
 	s.fe.Clear()
 }
+
+func (s *scalar) SetVarTime(varTime bool) error {
+	return ErrVarTime
+}

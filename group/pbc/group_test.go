@@ -65,21 +65,21 @@ func TestG2(t *testing.T) {
 
 func TestP0(t *testing.T) {
 	var p0 = NewPairingFp254BNb()
-	test.TestGroup(p0.G1())
-	//test.TestGroup(p0.G2())
-	//test.TestGroup(p0.GT())
+	test.GroupTest(p0.G1())
+	//test.GroupTest(p0.G2())
+	//test.GroupTest(p0.GT())
 }
 
 func TestP1(t *testing.T) {
 	var p1 = NewPairingFp382_1()
-	test.TestGroup(p1.G1())
-	//test.TestGroup(p1.G2())
-	//test.TestGroup(p1.GT())
+	test.GroupTest(p1.G1())
+	//test.GroupTest(p1.G2())
+	//test.GroupTest(p1.GT())
 }
 
 func TestP2(t *testing.T) {
-	var p2 = NewPairingFp382_2()
-	//test.TestGroup(p2.G2())
-	//test.TestGroup(p2.G1())
-	test.TestGroup(p2.GT())
+	//var p2 = NewPairingFp382_2()
+	//test.GroupTest(p2.G2())
+	//test.GroupTest(p2.G1())
+	//test.GroupTest(p2.GT())
 }

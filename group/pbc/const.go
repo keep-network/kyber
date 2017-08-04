@@ -1,6 +1,6 @@
 package pbc
 
-import "dfinity/crypto/bls"
+import "github.com/dfinity/go-dfinity-crypto/bls"
 
 // CurveFp254BNb -- 254 bit curve
 const CurveFp254BNb = bls.CurveFp254BNb

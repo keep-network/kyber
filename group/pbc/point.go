@@ -2,7 +2,7 @@ package pbc
 
 import (
 	"crypto/cipher"
-	"dfinity/crypto/bls"
+	"github.com/dfinity/go-dfinity-crypto/bls"
 	"errors"
 	"io"
 	"runtime"

@@ -7,7 +7,7 @@ import (
 
 	"gopkg.in/dedis/kyber.v1/util/random"
 
-	"dfinity/crypto/bls"
+	"github.com/dfinity/go-dfinity-crypto/bls"
 
 	"gopkg.in/dedis/kyber.v1"
 	"gopkg.in/dedis/kyber.v1/group/internal/marshalling"

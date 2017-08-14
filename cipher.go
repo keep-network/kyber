@@ -8,7 +8,7 @@ import (
 	"gopkg.in/dedis/kyber.v1/util/subtle"
 )
 
-// CipherState defines an interface to an kyber.symmetric message cipher.
+// CipherState defines an interface to a kyber.symmetric message cipher.
 // The cipher embodies a scalar that may be used to encrypt/decrypt data
 // as well as to generate cryptographically random bits.
 // The Cipher can also cryptographically absorb data or key material,
@@ -20,7 +20,7 @@ import (
 //
 //     cipher.Message(dst, src, key) Cipher
 //
-// A call always processes exactly max(len(dst),len(dst),len(key)) bytes.
+// A call always processes exactly max(len(dst),len(src),len(key)) bytes.
 // All slice arguments may be nil or of varying lengths.
 // If the src or key slices are short, the missing bytes are taken to be zero.
 // If the dst slice is short, the extra output bytes are discarded.
@@ -149,7 +149,7 @@ var RandomKey []byte
 // a Cipher may be used for authenticated encryption and decryption.
 //
 // A Cipher is in fact simply a convenience/helper wrapper around
-// the CipherState interface, which represents and kyber. over
+// the CipherState interface, which represents XXX and kyber. over
 // an underlying message cipher implementation.
 // The underlying CipherState instance typically embodies
 // both the specific message cipher algorithm in use,

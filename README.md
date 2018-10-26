@@ -41,10 +41,6 @@ as follows:
 	cd $GOPATH/src/github.com/dedis/kyber
 	go get -t ./... # install 3rd-party dependencies
 
-You should then be able to test its basic function as follows:
-
-	go test -v
-
 You can recursively test all the packages in the library as follows,
 keeping in mind that some sub-packages will only build
 if certain dependencies are satisfied as described below:
